@@ -1,0 +1,9 @@
+﻿---
+BasedOnStyle: LLVM
+ColumnLimit: '120'
+IndentWidth: '4'
+AllowShortFunctionsOnASingleLine: None
+AccessModifierOffset: -4
+BreakConstructorInitializers: BeforeComma
+PointerAlignment: Left
+...

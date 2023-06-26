@@ -83,4 +83,4 @@ The following states are possible: **I**dle, **A**ctive (i.e. serving a tour), a
 ## Viewer
 The output described above may be loaded into [DRSim-Viewer](https://github.com/martin-pouls/DRSim-Viewer) to replay a simulation run.
 
-![Import process](https://i.imgur.com/3r7xI0B.gif)
+![Import process](https://i.imgur.com/DAccDWT.gif)

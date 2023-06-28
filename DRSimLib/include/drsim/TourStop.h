@@ -6,8 +6,20 @@ namespace drsim {
 
 enum class TourStopAction { PICKUP, DROPOFF };
 
+/**
+ * @brief A stop in the tour of a vehicle.
+ **/
 class TourStop {
 public:
+    /**
+     * @param requestId The ID of the requests for which the action is performed.
+     * @param action The action (pickup or dropoff) at this stop.
+     * @param location The location of the stop.
+     * @param earliestTime The earliest time at which the action may be performed.
+     * @param plannedDepartureTime The planned time of departure at the stop.
+     * @param serviceDuration The service duration for the action at this stop.
+     * @param passengerChange The change in passengers that are boarding or alighting.
+     **/
     TourStop(int requestId, TourStopAction action, const PointLatLon& location,
              const boost::posix_time::ptime& earliestTime, const boost::posix_time::ptime& plannedDepartureTime,
              const boost::posix_time::time_duration& serviceDuration, int passengerChange);

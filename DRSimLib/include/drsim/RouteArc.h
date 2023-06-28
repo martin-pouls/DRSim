@@ -4,8 +4,19 @@
 
 namespace drsim {
 
+/**
+ * @brief A single arc in a route.
+ **/
 class RouteArc {
 public:
+    /**
+     * @param duration The duration of this arc.
+     * @param distance The distance of this arc (in meters).
+     * @param startLocation The start location.
+     * @param endLocation The end location
+     * @param startTime The departure time at the start location.
+     * @param endTime The arrival time at the end location.
+     **/
     RouteArc(const boost::posix_time::time_duration& duration, unsigned distance, const PointLatLon& startLocation,
              const PointLatLon& endLocation, const boost::posix_time::ptime& startTime,
              const boost::posix_time::ptime& endTime);

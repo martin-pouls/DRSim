@@ -1,19 +1,17 @@
 #include "include/drsim/TripRequestManager.h"
 #include "include/drsim/PlanningServiceInterface.h"
-#include "include/drsim/SimulationLog.h"
+#include "include/drsim/SimulationStats.h"
 #include <spdlog/spdlog.h>
 
 namespace drsim {
-TripRequestManager::TripRequestManager(PlanningServiceInterface& planningServiceInterface, SimulationLog& simulationLog)
+TripRequestManager::TripRequestManager(PlanningServiceInterface& planningServiceInterface, SimulationStats& simulationStats)
     : planningServiceInterface(planningServiceInterface)
-    , simulationLog(simulationLog) {
+    , simulationStats(simulationStats) {
 }
 
 void TripRequestManager::submitTripRequest(const TripRequestData& tripRequestData) {
     bool accepted = planningServiceInterface.submitTripRequest(tripRequestData);
-    RequestState state = accepted ? RequestState::ACCEPTED : RequestState::REJECTED;
-    simulationLog.logRequest(
-        RequestLogEntry(tripRequestData.getId(), tripRequestData.getRequestTime(), state));
+    simulationStats.addRequestStats(tripRequestData, accepted);
     spdlog::info("Submitted trip request {}", tripRequestData.getId());
 }
 } // namespace drsim

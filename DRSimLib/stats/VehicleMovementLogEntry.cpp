@@ -11,7 +11,7 @@ VehicleMovementLogEntry::VehicleMovementLogEntry(int vehicleId, const boost::pos
     , endLocation(endLocation) {
 }
 
-void VehicleMovementLogEntry::write(std::ostream& stream, const boost::posix_time::ptime& simulationStart) const {
+void VehicleMovementLogEntry::writeReplayData(std::ostream& stream, const boost::posix_time::ptime& simulationStart) const {
     boost::posix_time::time_duration startDifference = startTimeStamp - simulationStart;
     boost::posix_time::time_duration endDifference = endTimeStamp - simulationStart;
     stream << vehicleId << ";" << startDifference.total_seconds() << ";" << endDifference.total_seconds() << ";";

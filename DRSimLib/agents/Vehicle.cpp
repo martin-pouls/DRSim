@@ -9,18 +9,18 @@
 #include "include/drsim/Engine.h"
 #include "include/drsim/PlanningServiceInterface.h"
 #include "include/drsim/RoutingEngineInterface.h"
-#include "include/drsim/SimulationLog.h"
+#include "include/drsim/SimulationStats.h"
 #include "spdlog/spdlog.h"
 #include "utility/TimeUtil.h"
 
 namespace drsim {
 Vehicle::Vehicle(const VehicleData& vehicleData, PlanningServiceInterface& planningService,
-                 RoutingEngineInterface& routingEngine, Engine& engine, SimulationLog& simulationLog)
+                 RoutingEngineInterface& routingEngine, Engine& engine, SimulationStats& simulationStats)
     : vehicleData(vehicleData)
     , planningService(planningService)
     , routingEngine(routingEngine)
     , engine(engine)
-    , simulationLog(simulationLog)
+    , simulationStats(simulationStats)
     , state(VehicleState::IDLE)
     , currentLocation(vehicleData.getLocation())
     , tour()
@@ -33,11 +33,11 @@ Vehicle::Vehicle(const VehicleData& vehicleData, PlanningServiceInterface& plann
     , pendingVehicleAction() {
     this->planningService.get().createVehicle(engine.getTime(), vehicleData.getLocation(), vehicleData.getCapacity(),
                                               vehicleData.getId());
-    this->simulationLog.get().logVehicleMovement(
-        VehicleMovementLogEntry(vehicleData.getId(), this->engine.get().getTime(), this->engine.get().getTime(),
-                                currentLocation, currentLocation));
-    this->simulationLog.get().logVehicleState(
-            VehicleStateLogEntry(vehicleData.getId(), state, this->engine.get().getTime()));
+    this->simulationStats.get().addVehicleStats(vehicleData);
+    this->simulationStats.get().addVehicleMovement(
+        vehicleData.getId(), VehicleMovementLogEntry(vehicleData.getId(), this->engine.get().getTime(),
+                                                     this->engine.get().getTime(), currentLocation, currentLocation));
+    this->simulationStats.get().changeVehicleState(vehicleData.getId(), state, this->engine.get().getTime());
 }
 
 PointLatLon Vehicle::getLocation() const {
@@ -114,10 +114,12 @@ void Vehicle::moveToNextArc() {
         std::unique_ptr<Event> event =
             std::make_unique<ArcEndEvent>(engine.get().getTime(), arc.value().getEndTime(), *this, arc.value());
         engine.get().add(event);
-        simulationLog.get().logVehicleMovement(
+        simulationStats.get().addVehicleMovement(
+            vehicleData.getId(),
             VehicleMovementLogEntry(vehicleData.getId(), engine.get().getTime(), arc.value().getEndTime(),
                                     arc.value().getStartLocation(), arc.value().getEndLocation()));
-        spdlog::debug("Moving vehicle {} to the next arc with target {}", vehicleData.getId(), arc.value().getEndLocation().toString());
+        spdlog::debug("Moving vehicle {} to the next arc with target {}", vehicleData.getId(),
+                      arc.value().getEndLocation().toString());
     }
 }
 
@@ -156,10 +158,9 @@ void Vehicle::startService() {
     pendingVehicleAction.reset();
     if (tourStop.getAction() == TourStopAction::PICKUP) {
         planningService.get().startPickup(engine.get().getTime(), vehicleData.getId(), tourStop.getRequestId());
-        simulationLog.get().logRequest(RequestLogEntry(tourStop.getRequestId(), engine.get().getTime(), RequestState::PICKED_UP));
+        simulationStats.get().pickupRequest(tourStop.getRequestId(), engine.get().getTime());
     } else {
         planningService.get().startDropoff(engine.get().getTime(), vehicleData.getId(), tourStop.getRequestId());
-        simulationLog.get().logRequest(RequestLogEntry(tourStop.getRequestId(), engine.get().getTime(), RequestState::DROPPED_OFF));
     }
     serviceEndTime.emplace(engine.get().getTime() + tourStop.getServiceDuration());
     std::unique_ptr<Event> event =
@@ -174,6 +175,7 @@ void Vehicle::endService() {
         planningService.get().endPickup(engine.get().getTime(), vehicleData.getId(), tourStop.getRequestId());
     } else {
         planningService.get().endDropoff(engine.get().getTime(), vehicleData.getId(), tourStop.getRequestId());
+        simulationStats.get().dropoffRequest(tourStop.getRequestId(), engine.get().getTime());
     }
     tour.erase(tour.begin());
     serviceEndTime.reset();
@@ -250,8 +252,7 @@ bool Vehicle::isUpdatePending() const {
 void Vehicle::storeStateIfChanged(const VehicleState& newState) {
     if (newState != state) {
         state = newState;
-        this->simulationLog.get().logVehicleState(
-            VehicleStateLogEntry(vehicleData.getId(), state, this->engine.get().getTime()));
+        this->simulationStats.get().changeVehicleState(vehicleData.getId(), state, this->engine.get().getTime());
     }
 }
 

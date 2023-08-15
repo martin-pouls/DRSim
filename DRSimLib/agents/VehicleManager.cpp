@@ -7,15 +7,15 @@
 
 namespace drsim {
 VehicleManager::VehicleManager(PlanningServiceInterface& planningService, RoutingEngineInterface& routingEngine,
-                               Engine& engine, SimulationLog& simulationLog)
+                               Engine& engine, SimulationStats& simulationStats)
     : planningService(planningService)
     , routingEngine(routingEngine)
     , engine(engine)
-    , simulationLog(simulationLog) {
+    , simulationStats(simulationStats) {
 }
 
 void VehicleManager::createVehicle(const VehicleData& vehicleData) {
-    vehicles.push_back(Vehicle(vehicleData, planningService, routingEngine, engine, simulationLog));
+    vehicles.push_back(Vehicle(vehicleData, planningService, routingEngine, engine, simulationStats));
     vehicleIndexById.insert(std::make_pair(vehicleData.getId(), vehicles.size() - 1));
     spdlog::info("Created vehicle {}", vehicleData.getId());
 }

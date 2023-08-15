@@ -3,7 +3,7 @@
 #include "PlanningServiceInterface.h"
 #include "RoutingEngineInterface.h"
 #include "Scenario.h"
-#include "SimulationLog.h"
+#include "SimulationStats.h"
 #include "TimeProvider.h"
 #include "TripRequestManager.h"
 #include "VehicleManager.h"
@@ -58,7 +58,7 @@ public:
      *
      * @param outputFolder The folder to which the files are written (must already exist).
      **/
-    void writeSimulationLog(const std::string& outputFolder);
+    void writeSimulationStats(const std::string& outputFolder);
 
 private:
     void initializeVehicleCreationEvents();
@@ -71,7 +71,7 @@ private:
     PlanningServiceInterface& planningService;
     RoutingEngineInterface& routingEngine;
     Engine engine;
-    SimulationLog simulationLog;
+    SimulationStats simulationStats;
     VehicleManager vehicleManager;
     TripRequestManager tripRequestManager;
 };

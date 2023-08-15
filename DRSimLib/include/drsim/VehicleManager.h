@@ -6,12 +6,12 @@ namespace drsim {
 class PlanningServiceInterface;
 class RoutingEngineInterface;
 class Engine;
-class SimulationLog;
+class SimulationStats;
 
 class VehicleManager {
 public:
     VehicleManager(PlanningServiceInterface& planningService, RoutingEngineInterface& routingEngine, Engine& engine,
-                   SimulationLog& simulationLog);
+                   SimulationStats& simulationStats);
 
     void createVehicle(const VehicleData& vehicleData);
     void removeVehicle(int vehicleId);
@@ -22,7 +22,7 @@ private:
     PlanningServiceInterface& planningService;
     RoutingEngineInterface& routingEngine;
     Engine& engine;
-    SimulationLog& simulationLog;
+    SimulationStats& simulationStats;
 
     std::vector<Vehicle> vehicles;
     std::unordered_map<int, size_t> vehicleIndexById;

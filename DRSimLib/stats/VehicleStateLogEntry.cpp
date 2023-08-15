@@ -23,9 +23,10 @@ std::string toString(const VehicleState& state) {
     throw std::exception("Invalid vehicle state");
 }
 
-void VehicleStateLogEntry::write(std::ostream& stream, const boost::posix_time::ptime& simulationStart) const {
+void VehicleStateLogEntry::writeReplayData(std::ostream& stream,
+                                           const boost::posix_time::ptime& simulationStart) const {
     boost::posix_time::time_duration difference = timeStamp - simulationStart;
-    stream << vehicleId  << ";" << difference.total_seconds() << ";" << toString(state);
+    stream << vehicleId << ";" << difference.total_seconds() << ";" << toString(state);
 }
 
 bool VehicleStateLogEntry::operator<(const VehicleStateLogEntry& other) const {
@@ -37,5 +38,17 @@ bool VehicleStateLogEntry::operator<(const VehicleStateLogEntry& other) const {
         }
     }
     return this->vehicleId < other.vehicleId;
+}
+
+const VehicleState& VehicleStateLogEntry::getState() const {
+    return state;
+}
+
+const boost::posix_time::ptime& VehicleStateLogEntry::getTimeStamp() const {
+    return timeStamp;
+}
+
+int VehicleStateLogEntry::getVehicleId() const {
+    return vehicleId;
 }
 } // namespace drsim

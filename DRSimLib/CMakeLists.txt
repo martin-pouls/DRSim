@@ -40,12 +40,13 @@
 "include/drsim/PlanningServiceInterface.h" 
 "include/drsim/PointLatLon.h" 
 "include/drsim/RequestLogEntry.h" 
+"include/drsim/RequestStats.h"
 "include/drsim/Route.h" 
 "include/drsim/RouteArc.h"  
 "include/drsim/RoutingEngineInterface.h" 
 "include/drsim/Scenario.h" 
 "include/drsim/Simulation.h" 
-"include/drsim/SimulationLog.h" 
+"include/drsim/SimulationStats.h" 
 "include/drsim/TimeObserver.h" 
 "include/drsim/TimeProvider.h" 
 "include/drsim/TourStop.h" 
@@ -57,11 +58,18 @@
 "include/drsim/VehicleMovementLogEntry.h" 
 "include/drsim/VehicleState.h" 
 "include/drsim/VehicleStateLogEntry.h" 
+"include/drsim/VehicleStats.h"
 
-"log/RequestLogEntry.cpp"  
-"log/SimulationLog.cpp" 
-"log/VehicleMovementLogEntry.cpp" 
-"log/VehicleStateLogEntry.cpp" 
+"stats/HistogramData.cpp"
+"stats/HistogramData.h"
+"stats/RequestLogEntry.cpp"  
+"stats/SimulationStats.cpp" 
+"stats/VehicleMovementLogEntry.cpp" 
+"stats/VehicleStateLogEntry.cpp" 
+"stats/RequestStats.cpp"
+"stats/VehicleStats.cpp"
+"stats/VehicleOccupationData.cpp"
+"stats/VehicleOccupationData.h"
 
 "models/PointLatLon.cpp" 
 "models/Route.cpp" 
@@ -69,8 +77,7 @@
 "models/Scenario.cpp" 
 "models/TourStop.cpp" 
 "models/TripRequestData.cpp" 
-"models/VehicleData.cpp" 
-)
+"models/VehicleData.cpp")
 
 find_package(Boost 1.75 REQUIRED COMPONENTS date_time)
 find_package(spdlog REQUIRED)

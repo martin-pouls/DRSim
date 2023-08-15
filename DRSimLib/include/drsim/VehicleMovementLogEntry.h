@@ -9,7 +9,7 @@ public:
                             const boost::posix_time::ptime& endTimeStamp, const PointLatLon& startLocation,
                             const PointLatLon& endLocation);
 
-    void write(std::ostream& stream, const boost::posix_time::ptime& simulationStart) const;
+    void writeReplayData(std::ostream& stream, const boost::posix_time::ptime& simulationStart) const;
     bool operator<(const VehicleMovementLogEntry& other) const;
 
 private:

@@ -11,12 +11,12 @@ class RoutingEngineInterface;
 class PlanningServiceInterface;
 class Engine;
 class Event;
-class SimulationLog;
+class SimulationStats;
 
 class Vehicle {
 public:
     Vehicle(const VehicleData& vehicleData, PlanningServiceInterface& planningService,
-            RoutingEngineInterface& routingEngine, Engine& engine, SimulationLog& simulationLog);
+            RoutingEngineInterface& routingEngine, Engine& engine, SimulationStats& simulationStats);
 
     PointLatLon getLocation() const;
     int getId() const;
@@ -35,7 +35,7 @@ private:
     std::reference_wrapper<PlanningServiceInterface> planningService;
     std::reference_wrapper<RoutingEngineInterface> routingEngine;
     std::reference_wrapper<Engine> engine;
-    std::reference_wrapper<SimulationLog> simulationLog;
+    std::reference_wrapper<SimulationStats> simulationStats;
     VehicleState state;
     PointLatLon currentLocation;
     std::vector<TourStop> tour;

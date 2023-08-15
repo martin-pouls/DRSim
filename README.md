@@ -40,14 +40,14 @@ The simulation scenario is described in `Scenario.h`. It contains the following 
 ### Output
 Via `Simulation::writeSimulationLog(const std::string& outputFolder)`, the simulation can write some log files that can be used with our [DRSim-Viewer](). The output files have the following formats:
 
-#### movementLog.csv
+#### vehicleMovementReplay.csv
 This file contains all vehicle movements.
 
 | vehicleId | startTime | endTime | startLat | startLon | endLat | endLon |
 |-----------|-----------|---------|----------|----------|--------|--------|
 |0          |0          |5        |53.5478   |10.0089   |53.5478 |10.0089 |
 
-#### requestLog.csv
+#### requestReplay.csv
 This file contains information regarding trip requests.
 
 | requestId | time | state | 
@@ -59,7 +59,7 @@ This file contains information regarding trip requests.
 
 The following states are possible: **A**ccepted, **R**ejected, **P**icked up, and **D**ropped off.
 
-#### simulationLog.json
+#### simulation.json
 This file contains some metadata concerning the simulation run. All timestamps in other files are seconds from the start.
 
 ```json
@@ -69,7 +69,7 @@ This file contains some metadata concerning the simulation run. All timestamps i
 }
 ```
 
-#### vehicleStatesLog.csv
+#### vehicleStatesReplay.csv
 This file contains changes in vehicle states.
 
 | vehicleId | time | state | 
@@ -80,7 +80,47 @@ This file contains changes in vehicle states.
 
 The following states are possible: **I**dle, **A**ctive (i.e. serving a tour), and **R**epositioning.
 
+#### simulationStats.json
+This file contains aggregated statistics regarding vehicles and trip requests.
+
+```json
+{
+    "requestStats": {
+        "acceptedRequests": 42,
+        "rejectedRequests": 5,
+        "delay": {
+            "buckets": [0, 60, 120],
+            "counts": [21, 21]
+        },
+        "rideTime": {
+            "buckets": [0, 180, 360, 540, 720],
+            "counts": [10, 12, 11, 9]
+        },
+        "waitingTime": {
+            "buckets": [0, 60, 120, 180, 240, 300],
+            "counts": [7, 13, 10, 8, 4]
+        }
+    },
+    "vehicleStats": {
+        "activeCounts": [0, 2, 2],
+        "idleCounts": [3, 0, 1],
+        "repositioningCounts": [0, 1, 0],
+        "timeStamps": ["20190319T180000", "20190319T180500", "20190319T181000"],
+        "totalVehicles": 90
+    }
+}
+```
+The fields `requestStats.delay`, `requestStats.rideTime` and `requestStats.waitingTime` contain histogram data for the delay (compared to direct travel), the ride time (inside a vehicle) and the waiting time (between request submission and pickup) of trip requests.
+
 ## Viewer
-The output described above may be loaded into [DRSim-Viewer](https://github.com/martin-pouls/DRSim-Viewer) to replay a simulation run.
+The output described above may be loaded into [DRSim-Viewer](https://github.com/martin-pouls/DRSim-Viewer). The viewer offers a replay functionality and charts.
+
+### Replay
+Load `vehicleMovementReplay.csv`, `vehicleStatesReplay.csv`, `vehicleStatesReplay.csv` and `simulation.json` to view a replay of a simulation run.
 
 ![Import process](https://i.imgur.com/DAccDWT.gif)
+
+### Charts
+Load `simulationStats.json` to view visualize aggregated statistics regarding a simulation run.
+
+![Charts view](https://i.imgur.com/REvYcDF.png)

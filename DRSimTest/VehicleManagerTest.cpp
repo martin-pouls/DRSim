@@ -1,9 +1,9 @@
-#include <gtest/gtest.h>
-#include <drsim/VehicleManager.h>
 #include "utility/EuclideanRouter.h"
 #include "utility/MockPlanningService.h"
 #include <drsim/Engine.h>
-#include <drsim/SimulationLog.h>
+#include <drsim/SimulationStats.h>
+#include <drsim/VehicleManager.h>
+#include <gtest/gtest.h>
 
 using namespace drsim;
 
@@ -24,11 +24,11 @@ public:
 
 TEST_F(VehicleManagerTest, testCreateVehicle) {
     Engine engine(start);
-    SimulationLog log(start, end);
+    SimulationStats stats(start, end);
     MockPlanningService planningService;
     EuclideanRouter routingEngine;
 
-    VehicleManager manager(planningService, routingEngine, engine, log);
+    VehicleManager manager(planningService, routingEngine, engine, stats);
     manager.createVehicle(vehicleData0);
 
     ASSERT_EQ(planningService.numVehiclesCreated, 1);
@@ -36,11 +36,11 @@ TEST_F(VehicleManagerTest, testCreateVehicle) {
 
 TEST_F(VehicleManagerTest, testRemoveVehicle) {
     Engine engine(start);
-    SimulationLog log(start, end);
+    SimulationStats stats(start, end);
     MockPlanningService planningService;
     EuclideanRouter routingEngine;
 
-    VehicleManager manager(planningService, routingEngine, engine, log);
+    VehicleManager manager(planningService, routingEngine, engine, stats);
     manager.createVehicle(vehicleData0);
 
     ASSERT_EQ(planningService.numVehiclesCreated, 1);
@@ -53,11 +53,11 @@ TEST_F(VehicleManagerTest, testRemoveVehicle) {
 
 TEST_F(VehicleManagerTest, testSendGpsMessage) {
     Engine engine(start);
-    SimulationLog log(start, end);
+    SimulationStats stats(start, end);
     MockPlanningService planningService;
     EuclideanRouter routingEngine;
 
-    VehicleManager manager(planningService, routingEngine, engine, log);
+    VehicleManager manager(planningService, routingEngine, engine, stats);
     manager.createVehicle(vehicleData0);
     manager.createVehicle(vehicleData1);
 

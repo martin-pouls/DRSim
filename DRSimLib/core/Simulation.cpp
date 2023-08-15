@@ -13,9 +13,9 @@ Simulation::Simulation(const Scenario& scenario, PlanningServiceInterface& plann
     , planningService(planningService)
     , routingEngine(routingEngine)
     , engine(scenario.getStart())
-    , simulationLog(scenario.getStart(), scenario.getEnd())
-    , vehicleManager(planningService, routingEngine, engine, simulationLog)
-    , tripRequestManager(planningService, simulationLog) {
+    , simulationStats(scenario.getStart(), scenario.getEnd())
+    , vehicleManager(planningService, routingEngine, engine, simulationStats)
+    , tripRequestManager(planningService, simulationStats) {
     initializeVehicleCreationEvents();
     initializeRequestEvents();
     initializeVehicleRemovalEvents();
@@ -41,8 +41,8 @@ void Simulation::registerTimeObserver(TimeObserver* observer) {
     engine.registerTimeObserver(observer);
 }
 
-void Simulation::writeSimulationLog(const std::string& outputFolder) {
-    simulationLog.write(outputFolder);
+void Simulation::writeSimulationStats(const std::string& outputFolder) {
+    simulationStats.write(outputFolder);
 }
 
 void Simulation::initializeVehicleCreationEvents() {

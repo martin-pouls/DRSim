@@ -106,14 +106,14 @@ This file contains aggregated statistics regarding vehicles and trip requests.
         "idleCounts": [3, 0, 1],
         "repositioningCounts": [0, 1, 0],
         "timeStamps": ["20190319T180000", "20190319T180500", "20190319T181000"],
-        "totalVehicles": 90
+        "totalVehicles": 3
     }
 }
 ```
-The fields `requestStats.delay`, `requestStats.rideTime` and `requestStats.waitingTime` contain histogram data for the delay (compared to direct travel), the ride time (inside a vehicle) and the waiting time (between request submission and pickup) of trip requests.
+The fields `requestStats.delay`, `requestStats.rideTime` and `requestStats.waitingTime` contain histogram data for the delay (compared to direct travel), the ride time (inside a vehicle) and the waiting time (between request submission and pickup) of trip requests. The `vehicleStats` contain the number of vehicles in different states for certain timestamps.
 
 ## Viewer
-The output described above may be loaded into [DRSim-Viewer](https://github.com/martin-pouls/DRSim-Viewer). The viewer offers a replay functionality and charts.
+The output described above may be loaded into [DRSim-Viewer](https://github.com/martin-pouls/DRSim-Viewer). The viewer offers a replay functionality and charts to visualize statistics.
 
 ### Replay
 Load `vehicleMovementReplay.csv`, `vehicleStatesReplay.csv`, `vehicleStatesReplay.csv` and `simulation.json` to view a replay of a simulation run.
